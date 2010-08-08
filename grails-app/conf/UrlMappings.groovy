@@ -1,13 +1,33 @@
 class UrlMappings {
 
-	static mappings = {
-		"/$controller/$action?/$id?"{
-			constraints {
-				// apply constraints here
-			}
-		}
+	static excludes = ["/robots.txt", "/images/*", "/css/*"]
 
-		"/"(view:"/index")
-		"500"(view:'/error')
+	static mappings = {
+		/* main dashboard */
+		"/"(controller:"dashboard")
+		
+		/* sitemap.xml generator */
+		"/sitemap"(controller:"sitemap")
+		
+		/* information pages */
+		"/info/$page"(controller:"page")
+		
+		/* developer area (publish apps/publish articles) */
+		"/developer/$action"(controller:"developer")
+		
+		/* articles */
+		"/blog/$chapter?/$slug?"(controller:"article")
+
+		/* projects */
+		"/projects/$action?/$id?"(controller:"project")
+		
+		/* moderator area */
+		"/moderator/$controller/$action?/$id?"{}
+
+		/* error handling */
+		"/errors/$action"(controller:"errors")
+		"500"(view:"/errors/serverError")
+		"404"(view:"/errors/pageNotFound")
+		"403"(view:"/errors/accessDenied")
 	}
 }

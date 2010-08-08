@@ -49,6 +49,9 @@ environments {
     production {
         grails.serverURL = "http://www.changeme.com"
     }
+    preproduction {
+    	grails.serverURL = "http://localhost:8080/${appName}"
+    }
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
     }
@@ -60,12 +63,9 @@ environments {
 
 // log4j configuration
 log4j = {
-    // Example of changing the log pattern for the default console
-    // appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+    appenders {
+        console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+    }
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
            'org.codehaus.groovy.grails.web.pages', //  GSP
@@ -81,3 +81,24 @@ log4j = {
 
     warn   'org.mortbay.log'
 }
+
+//Custom configuration
+//blog.social.properties.twitter.file = "twitter.properties" 
+//blog.social.properties.bitly.file = "bitly.properties"
+
+//grails.config.locations = ["classpath:${blog.social.properties.twitter.file}",
+ //                         "classpath:${blog.social.properties.bitly.file}"]	
+
+gtugio.export.format.default = "atom_1.0"
+gtugio.export.format.rss = "rss_2.0"
+gtugio.export.format.atom = "atom_1.0"
+
+gtugio.properties.defaults.url = "http://io.gtug.org.ua"
+gtugio.properties.defaults.title = "GTUG I/O"
+gtugio.properties.defaults.keywords = ""
+gtugio.properties.defaults.description = ""
+gtugio.properties.defaults.author.name = "Andrey Yasinetskiy"
+gtugio.properties.defaults.author.email = "yasinecky@gmail.com"
+gtugio.properties.defaults.feed.title = "GTUG I/O Articles"
+gtugio.properties.defaults.feed.description = "GTUG I/O Articles"
+gtugio.properties.defaults.feed.contentType = "text/html"

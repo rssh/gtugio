@@ -1,9 +1,3 @@
-dataSource {
-    pooled = true
-    driverClassName = "org.hsqldb.jdbcDriver"
-    username = "sa"
-    password = ""
-}
 hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = true
@@ -13,20 +7,29 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "create-drop" // one of 'create', 'create-drop','update'
+            dbCreate = "create-drop"
             url = "jdbc:hsqldb:mem:devDB"
         }
     }
     test {
         dataSource {
-            dbCreate = "update"
+            dbCreate = "create-drop"
             url = "jdbc:hsqldb:mem:testDb"
         }
     }
+    preproduction {
+		dataSource {
+			pooled = true
+			dbCreate = "update"
+			url = "jdbc:mysql://localhost/gtugio_preprod?useUnicode=true&characterEncoding=UTF-8"
+			driverClassName = "com.mysql.jdbc.Driver"
+			dialect= gtugio.core.hibernate.MySQL5UTF8InnoDBDialect
+			username = "gtugio"
+			password = "gtugio_preprod"
+		}
+	}
     production {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:hsqldb:file:prodDb;shutdown=true"
         }
     }
 }
