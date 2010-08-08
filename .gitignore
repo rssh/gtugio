@@ -1,0 +1,7 @@
+web-app/WEB-INF/classes/*
+target/*
+.DS_Store
+.settings
+stacktrace.log
+*-javadoc.jar
+*-sources.jar
