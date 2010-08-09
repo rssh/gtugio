@@ -1,6 +1,7 @@
 package gtugio.domain
 
 import gtugio.configuration.ApplicationKind 
+import gtugio.configuration.PropertyName 
 
 class Project {
 
@@ -12,7 +13,7 @@ class Project {
 	String website
 	String support
 	
-	String kind = ApplicationKind.LIBRARY
+	String kind = PropertyName.SITE_URL
 	
 	String repository
 	
