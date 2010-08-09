@@ -3,10 +3,10 @@ package gtugio.domain
 class SiteProperty {
 
 	String name
-	String value
+	String value = ""
 	
 	static constraints = {
 		name(blank:false, unique:true)
-		value(blank:false)
+		value(blank:true, nullable:false)
 	}
 }
