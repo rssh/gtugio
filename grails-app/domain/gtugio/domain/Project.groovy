@@ -38,11 +38,11 @@ class Project {
 	}
 	
     static constraints = {
-		name(max:50, blank:false)
-		description(max:128, blank:false)
-		detailedDescription(max:2000, blank:false)
+		name(maxSize:50, blank:false)
+		description(maxSize:128, blank:false)
+		detailedDescription(maxSize:2000, blank:false)
 		icon(blank:false)
-		appversion(max:16, blank:false)
+		appversion(maxSize:16, blank:false)
 		website(blank:true)
 		support(blank:true)
 		kind(blank:false, inList:[ApplicationKind.ANDROID, ApplicationKind.APP_ENGINE, 

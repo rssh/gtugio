@@ -24,8 +24,12 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.jboss.com/maven2/"
     }
     dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-
-        // runtime 'mysql:mysql-connector-java:5.1.5'
+        //compile ('org.codehaus.groovy.modules.http-builder:http-builder:0.5.0') {
+    		//excludes 'xml-apis', 'xercesImpl', 'xmlParserAPIs'
+    	//}
+		
+//		runtime 'jdom:jdom:1.0'
+		//'org.codehaus.groovy.modules.http-builder:http-builder:0.5.0'
+//		'com.mysql:mysql-connector-java:5.1.5,
     }
 }
