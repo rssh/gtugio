@@ -1,5 +1,6 @@
 package gtugio.domain
 
+import gtugio.utils.TextUtils 
 import java.util.Date;
 
 class Article {
@@ -11,9 +12,16 @@ class Article {
 	String slug
 	
 	Date published
-	Date updated
+	Date updated = new Date()
 	
-	String status
+	String status = "draft"
+	
+	String approvedBy
+	Date approveDate
+	
+	String declinedBy
+	String declineDate
+	String declineReason
 	
     def beforeInsert = {
 		updated = new Date()
@@ -24,11 +32,11 @@ class Article {
 	}
 	
 	def getIntro() {
-		//TextUtils.safeMarkupAfterSplit(contentHtml?.split("<splitter/>")[0].trim())
+		TextUtils.safeMarkup(contentHtml?.split("<splitter/>")[0].trim())
 	}
 	
 	def getSummary() {
-		//TextUtils.truncateWords(TextUtils.stripTags(contentHtml?.split("<splitter/>")[0].trim()), 50)
+		TextUtils.truncateWords(TextUtils.stripTags(contentHtml?.split("<splitter/>")[0].trim()), 50)
 	}
 	
 	def getPermalink() {
@@ -43,7 +51,13 @@ class Article {
 		chapter(nullable:true)
 		content(blank:false)
 		contentHtml(blank:true)
-		status(blank:false, inList:["draft", "published"])
+		status(blank:false, inList:["draft", "published", "approved", "declined"])
+		
+		approvedBy(nullable:true)
+		approveDate(nullable:true)
+		declinedBy(nullable:true)
+		declineDate(nullable:true)
+		declineReason(nullable:true)
 	}
 
 	static mapping = {
@@ -54,6 +68,6 @@ class Article {
 	
 	static indexes = {
 		published()
-		status()
+		status("chapter", "status")
 	}
 }
