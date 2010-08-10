@@ -23,7 +23,7 @@ class GoogleAuthController {
 		
 		session.setAttribute "openid-disc", discovered
 		
-		AuthRequest authReq = consumerManager.authenticate(discovered, "http://localhost:8080/gtugio/authenticate");
+		AuthRequest authReq = consumerManager.authenticate(discovered, "http://localhost:8080/gtugio/authenticate/");
 		
 		FetchRequest fetch = FetchRequest.createFetchRequest();
 		fetch.addAttribute("email", "http://schema.openid.net/contact/email", true);
