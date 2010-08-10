@@ -24,6 +24,8 @@ class UrlMappings {
 		/* moderator area */
 		"/moderator/$controller/$action?/$id?"{}
 
+		"/authenticate/$action?"(controller:"googleAuth")
+		
 		/* error handling */
 		"/errors/$action"(controller:"errors")
 		"500"(view:"/errors/serverError")

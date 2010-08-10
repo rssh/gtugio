@@ -19,7 +19,7 @@ class SecurityFilters {
 				// process request to openid pr with session expired
 				// redirect to accessed action 
 				def curActionName = actionName == null ? "index" : actionName
-				
+
 				grailsApplication.controllerClasses.each { controller ->
 					findControllerAnnotation(controller)
 				}
@@ -27,8 +27,8 @@ class SecurityFilters {
 				if (params.controller == null) {
 					redirect(controller:"errors", action:"accessDenied")
 					return true
-				} else if (session.user == null && isSecuredResource(controllerName, curActionName)) {
-					redirect(controller:"errors", action:"accessDenied")
+				} else if (!session.user && isSecuredResource(controllerName, curActionName)) {
+					redirect(controller:"googleAuth")
 				
 					// re-request openid auth from google
 					return false
