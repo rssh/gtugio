@@ -28,6 +28,10 @@ grails.project.dependency.resolution = {
     		//excludes 'xml-apis', 'xercesImpl', 'xmlParserAPIs'
     	//}
 		
+		//compile 'org.openid4java:openid4java:0.9.5'
+		runtime ('org.openid4java:openid4java:0.9.5') {
+			excludes 'xml-apis', 'xercesImpl', 'xmlParserAPIs'
+		}
 //		runtime 'jdom:jdom:1.0'
 		//'org.codehaus.groovy.modules.http-builder:http-builder:0.5.0'
 //		'com.mysql:mysql-connector-java:5.1.5,
