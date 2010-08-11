@@ -10,14 +10,6 @@ class SecurityFilters {
 	def filters = {
 		auth(controller: "*", action: "*") {
 			before = {
-				// get all controllers +
-				// get all actions +
-				// map actions and annotations +
-				// get current controller and action name
-				// check user cookies and session 
-				// redirect to login if no cookies 
-				// process request to openid pr with session expired
-				// redirect to accessed action 
 				def curActionName = actionName == null ? "index" : actionName
 
 				grailsApplication.controllerClasses.each { controller ->

@@ -7,5 +7,5 @@ import gtugio.core.auth.Secure
 class DashboardController {
 
 	@Secure(["openid"])
-    def index = { render 'access granted' }
+    def index = { render "access granted. You are logged in as: ${session.user.email}" }
 }
