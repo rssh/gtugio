@@ -1,5 +1,7 @@
 import gtugio.configuration.PropertyName 
+import gtugio.configuration.auth.Role 
 import gtugio.domain.SiteProperty 
+import gtugio.domain.User 
 import org.codehaus.groovy.grails.commons.ConfigurationHolder 
 
 class BootStrap {
@@ -43,6 +45,8 @@ class BootStrap {
     }
 	
 	def private populateStubData = {
+		(User.findByEmail("yasinecky@gmail.com"))?.delete()
+		new User(name:"Andrey Yasinetskiy", nickname: "yasinecky", email: "yasinecky@gmail.com", registrationDate: new Date(), role: Role.ADMIN).save(flush:true)
 		
 	}
 	

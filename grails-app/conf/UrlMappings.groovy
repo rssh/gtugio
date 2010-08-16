@@ -19,7 +19,7 @@ class UrlMappings {
 		"/blog/$chapter?/$slug?"(controller:"article")
 
 		/* projects */
-		"/projects/$action?/$id?"(controller:"project")
+		//"/projects/$action?/$id?"(controller:"project")
 		
 		/* moderator area */
 		"/moderator/$controller/$action?/$id?"{}
