@@ -28,8 +28,8 @@ class UrlMappings {
 		
 		/* error handling */
 		"/errors/$action"(controller:"errors")
-		"500"(view:"/errors/serverError")
-		"404"(view:"/errors/pageNotFound")
-		"403"(view:"/errors/accessDenied")
+		"500"(controller:"errors", view:"serverError")
+		"404"(controller:"errors", view:"pageNotFound")
+		"403"(controller:"errors", view:"accessDenied")
 	}
 }

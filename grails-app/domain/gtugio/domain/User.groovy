@@ -9,13 +9,17 @@ class User {
 	String email
 	Date registrationDate
 	
-	String role = Role.ROLE_USER
+	Role role = Role.USER
 	
 	static constraints = {
 		name(blank:true, nullable:false)
 		nickname(blank:false, nullable:false)
 		email(blank:false, nullable:false)
 		registrationDate(nullable:false)
-		role(blank:false, nullable:false, inList:[Role.ROLE_USER, Role.ROLE_MODERATOR, Role.ROLE_ADMIN])
+		role(blank:false, nullable:false, inList:[Role.USER, Role.MODERATOR, Role.ADMIN])
+	}
+	
+	static mapping = {
+		role type: Role
 	}
 }

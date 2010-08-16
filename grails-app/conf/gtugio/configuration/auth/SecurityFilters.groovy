@@ -20,12 +20,13 @@ class SecurityFilters {
 				}
 
 				if (params.controller == null) {
-					redirect(controller:"errors", action:"accessDenied")
+					redirect(controller:"googleAuth")
 					return true
 				} else if (!session.user && isSecuredResource(controllerName, curActionName)) {
 					redirect(controller:"googleAuth")
 					return false
-				} else if (session.user && !authorized(session.user.role, controllerName, curActionName)) {
+				} else if (session.user && isSecuredResource(controllerName, curActionName) 
+							&& !authorized(session.user.role, controllerName, curActionName)) {
 					redirect(controller:"errors", action:"accessDenied")
 					return false
 				}

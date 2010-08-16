@@ -1,8 +1,9 @@
 package gtugio.controller
 
+import gtugio.configuration.auth.Role
 import gtugio.core.auth.Secure 
 
-@Secure(["user", "moderator", "admin"])
+@Secure([Role.MODERATOR, Role.ADMIN])
 class DeveloperController {
 
 	

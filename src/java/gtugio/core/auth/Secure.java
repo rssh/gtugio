@@ -1,5 +1,7 @@
 package gtugio.core.auth;
 
+import gtugio.configuration.auth.Role;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -12,5 +14,5 @@ import java.lang.annotation.Target;
 @Inherited
 @Documented
 public @interface Secure {
-	String[] value();
+	Role[] value();
 }
