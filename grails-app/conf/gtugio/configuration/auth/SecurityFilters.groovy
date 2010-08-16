@@ -3,17 +3,20 @@ package gtugio.configuration.auth
 import gtugio.core.auth.Secure 
 import org.apache.commons.lang.WordUtils 
 
+
 class SecurityFilters {
 
-	def private actionRoleMap = [:]
+	def static actionRoleMap = [:]
 	
 	def filters = {
 		auth(controller: "*", action: "*") {
 			before = {
 				def curActionName = actionName == null ? "index" : actionName
 
-				grailsApplication.controllerClasses.each { controller ->
-					findControllerAnnotation(controller)
+				if (!actionRoleMap.size()) {
+					grailsApplication.controllerClasses.each { controller ->
+						findControllerAnnotation(controller)
+					}
 				}
 
 				if (params.controller == null) {
@@ -21,8 +24,6 @@ class SecurityFilters {
 					return true
 				} else if (!session.user && isSecuredResource(controllerName, curActionName)) {
 					redirect(controller:"googleAuth")
-				
-					// re-request openid auth from google
 					return false
 				} else if (session.user && !authorized(session.user.role, controllerName, curActionName)) {
 					redirect(controller:"errors", action:"accessDenied")
@@ -47,17 +48,27 @@ class SecurityFilters {
 		def actionRoles = findActionRoles(clazz)
 		if (actionRoles != null)
 			actionRoleMap.putAt controllerName, actionRoles
+			
+		actionRoleMap
 	}
 	
 	def private findActionRoles(clazz) {
 		def actionRoles = [:]
 		
-		for (field in clazz.getDeclaredFields()) {
-			Secure annotation = field.getAnnotation(Secure.class)
-			if (annotation != null) 
-				actionRoles.putAt field.getName(), annotation.value() as Set
+		Secure typeAnnotation = clazz.getAnnotation(Secure.class)
+		if (typeAnnotation) {
+			for (field in clazz.getDeclaredFields()) {
+				if (field.getName() != "metaClass") // to avoid GroovyCastException
+					actionRoles.putAt field.getName(), typeAnnotation.value() as Set
+			}
+		} else {
+			for (field in clazz.getDeclaredFields()) {
+				Secure annotation = field.getAnnotation(Secure.class)
+				if (annotation != null)
+					actionRoles.putAt field.getName(), annotation.value() as Set
+			}
 		}
-		
+
 		actionRoles
 	}
 }

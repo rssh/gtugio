@@ -13,7 +13,7 @@ class UrlMappings {
 		"/info/$page"(controller:"page")
 		
 		/* developer area (publish apps/publish articles) */
-		"/developer/$action"(controller:"developer")
+		"/developer/$action?/$id?"(controller:"developer")
 		
 		/* articles */
 		"/blog/$chapter?/$slug?"(controller:"article")

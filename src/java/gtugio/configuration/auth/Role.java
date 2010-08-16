@@ -9,5 +9,5 @@ class Role {
 	public static final String ROLE_MODERATOR = "moderator";
 	
 	/* default role for users signed in using google accounts */
-	public static final String ROLE_OPENID = "openid";
+	public static final String ROLE_USER= "user";
 }
