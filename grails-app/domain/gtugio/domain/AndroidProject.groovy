@@ -11,7 +11,7 @@ class AndroidProject extends Project {
 	String marketUrl
 	
     static constraints = {
-		qrcode(blank:true)
-		marketUrl(blank:true)
+		qrcode(nullable:true, blank:true)
+		marketUrl(nullable:true, blank:true)
     }
 }

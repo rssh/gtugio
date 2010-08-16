@@ -10,6 +10,6 @@ class ChromeAppProject extends Project {
 	String appMarketPlaceURL
 	
     static constraints = {
-		appMarketPlaceURL(blank:false)
+		appMarketPlaceURL(nullable:true, blank:false)
     }
 }

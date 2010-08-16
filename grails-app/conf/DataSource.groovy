@@ -6,10 +6,20 @@ hibernate {
 // environment specific settings
 environments {
     development {
-        dataSource {
+        /*dataSource {
             dbCreate = "create-drop"
             url = "jdbc:hsqldb:mem:devDB"
-        }
+        }*/
+		
+		dataSource {
+			pooled = true
+			dbCreate = "update"
+			url = "jdbc:mysql://localhost/gtugio_dev?useUnicode=true&characterEncoding=UTF-8"
+			driverClassName = "com.mysql.jdbc.Driver"
+			dialect= gtugio.core.hibernate.MySQL5UTF8InnoDBDialect
+			username = "gtugio_dev"
+			password = "gtugio_dev"
+		}
     }
     test {
         dataSource {

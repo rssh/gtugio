@@ -103,5 +103,21 @@ gtugio.properties.defaults.feed.title = "GTUG I/O Articles"
 gtugio.properties.defaults.feed.description = "GTUG I/O Articles"
 gtugio.properties.defaults.feed.contentType = "text/html"
 
-gtugio.properties.auth.openid.returnURL = "http://localhost:8080/gtugio/authenticate/verify/"
-gtugio.properties.auth.openid.realm = "http://localhost:8080"
+environments {
+	development {
+		gtugio.properties.auth.openid.returnURL = "http://localhost:8080/gtugio/authenticate/verify/"
+		gtugio.properties.auth.openid.realm = "http://localhost:8080"
+	}
+	test {
+		gtugio.properties.auth.openid.returnURL = "http://localhost:8080/gtugio/authenticate/verify/"
+		gtugio.properties.auth.openid.realm = "http://localhost:8080"
+	}
+	preproduction {
+		gtugio.properties.auth.openid.returnURL = "http://localhost:8080/gtugio/authenticate/verify/"
+		gtugio.properties.auth.openid.realm = "http://localhost:8080"
+	}
+	production {
+		gtugio.properties.auth.openid.returnURL = "http://localhost:8080/gtugio/authenticate/verify/"
+		gtugio.properties.auth.openid.realm = "http://localhost:8080"
+	}
+}

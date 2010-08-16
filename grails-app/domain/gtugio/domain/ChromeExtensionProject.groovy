@@ -2,7 +2,7 @@ package gtugio.domain
 
 import gtugio.configuration.ApplicationKind 
 
-class ChromeExtensionProject {
+class ChromeExtensionProject extends Project {
 
 	String kind = ApplicationKind.CHROME_EXTENSION
 	String icon = "/images/default_chrome_extension_icon.png"
@@ -10,6 +10,6 @@ class ChromeExtensionProject {
 	String extensionURL
 	
     static constraints = {
-		extensionURL(blank:false)
+		extensionURL(nullable:true, blank:false)
     }
 }

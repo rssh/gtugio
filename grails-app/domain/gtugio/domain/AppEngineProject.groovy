@@ -10,6 +10,6 @@ class AppEngineProject extends Project {
 	String applicationUrl
 	
     static constraints = {
-		applicationUrl(blank:false)
+		applicationUrl(nullable:true, blank:false)
     }
 }
