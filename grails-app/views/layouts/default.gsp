@@ -16,6 +16,11 @@
 </head>
 
 <body>
+	<g:if test="${session.user}">
+		<header>
+			<b>${session.user.email} <a href="<g:createLinkTo dir="/authenticate/signout"/>">Sign Out</a></b>
+		</header>
+	</g:if>
 	<g:layoutBody />
 </body>
 </html>

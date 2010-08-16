@@ -3,7 +3,7 @@ package gtugio.controller
 import gtugio.configuration.auth.Role
 import gtugio.core.auth.Secure 
 
-@Secure([Role.MODERATOR, Role.ADMIN])
+@Secure([Role.USER, Role.MODERATOR, Role.ADMIN])
 class DeveloperController {
 
 	
@@ -12,6 +12,6 @@ class DeveloperController {
 	}
 
 	def dashboard = {
-		render "Hello. I'm a developer dashboard." 
+		render "Hello. I'm a developer dashboard."
 	}
 }

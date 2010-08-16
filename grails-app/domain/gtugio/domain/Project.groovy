@@ -5,6 +5,8 @@ import gtugio.configuration.PropertyName
 
 class Project {
 
+	User user
+	
 	String name
 	String description
 	String detailedDescription
@@ -13,7 +15,7 @@ class Project {
 	String website
 	String support
 	
-	String kind = PropertyName.SITE_URL
+	String kind = ApplicationKind.LIBRARY
 	
 	String repository
 	
@@ -38,6 +40,7 @@ class Project {
 	}
 	
     static constraints = {
+		user(nullable:false, blank:false)
 		name(maxSize:50, blank:false)
 		description(maxSize:128, blank:false)
 		detailedDescription(maxSize:2000, blank:false)

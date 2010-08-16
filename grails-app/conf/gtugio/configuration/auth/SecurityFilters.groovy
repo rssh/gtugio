@@ -3,6 +3,7 @@ package gtugio.configuration.auth
 import gtugio.core.auth.Secure 
 import org.apache.commons.lang.WordUtils 
 
+// TODO: separate annotation mapping for controller and fields.
 
 class SecurityFilters {
 
