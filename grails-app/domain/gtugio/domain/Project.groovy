@@ -51,7 +51,7 @@ class Project {
 		kind(blank:false, inList:[ApplicationKind.ANDROID, ApplicationKind.APP_ENGINE, 
 		                          ApplicationKind.CHROME_APP, ApplicationKind.CHROME_EXTENSION, ApplicationKind.LIBRARY])
 		repository(blank:false)
-		status(blank:false, inList:["published", "draft", "approved", "desclined"])
+		status(blank:false, inList:["published", "draft", "pending", "approved", "declined"])
 		
 		approvedBy(nullable:true)
 		approveDate(nullable:true)

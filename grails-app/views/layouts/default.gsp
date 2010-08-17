@@ -12,13 +12,22 @@
 	<link rel="icon" type="image/png" href="/images/favicon.png">
 
 	<link rel="alternate" type="application/rss+xml" title=" (RSS)" href="/feed/rss" /> 
-	<link rel="alternate" type="application/atom+xml" title=" (Atom)" href="/feed/atom" /> 
+	<link rel="alternate" type="application/atom+xml" title=" (Atom)" href="/feed/atom" />
+	
+	<nav:resources/> 
 </head>
 
 <body>
 	<g:if test="${session.user}">
 		<header>
-			<b>${session.user.email} <a href="<g:createLinkTo dir="/authenticate/signout"/>">Sign Out</a></b>
+			<section id="top_info">
+				<nav:ifHasItems group="admin">
+					<section id="admin_actions">Manage: <nav:render group="admin"/></section>
+				</nav:ifHasItems>
+				<section id="user_info">
+					<b>${session.user.email} <a href="<g:createLinkTo dir="/authenticate/signout"/>">Sign Out</a></b>
+				</section>
+			</section>
 		</header>
 	</g:if>
 	<g:layoutBody />

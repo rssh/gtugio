@@ -18,6 +18,10 @@ class DeveloperController {
 			}
 		}
 		
-		render model:projects
+		[ projects:projects ]
+	}
+	
+	def profile = {
+		render "profile"
 	}
 }
