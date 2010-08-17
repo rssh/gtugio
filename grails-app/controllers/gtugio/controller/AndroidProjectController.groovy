@@ -4,7 +4,6 @@ import gtugio.configuration.auth.Role
 import gtugio.core.auth.Secure 
 import gtugio.domain.AndroidProject 
 
-@Secure([Role.ADMIN])
 class AndroidProjectController {
 
 	def scaffold = AndroidProject

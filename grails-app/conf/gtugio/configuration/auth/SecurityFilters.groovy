@@ -3,8 +3,6 @@ package gtugio.configuration.auth
 import gtugio.core.auth.Secure 
 import org.apache.commons.lang.WordUtils 
 
-// TODO: separate annotation mapping for controller and fields.
-
 class SecurityFilters {
 
 	def static actionRoleMap = [:]
@@ -16,7 +14,7 @@ class SecurityFilters {
 
 				if (!actionRoleMap.size()) {
 					grailsApplication.controllerClasses.each { controller ->
-						findControllerAnnotation(controller)
+						mapSecurityAnnotations(controller)
 					}
 				}
 
@@ -43,32 +41,49 @@ class SecurityFilters {
 		actionRoleMap.getAt(controller)?.getAt(action)?.contains(userRole)
 	}
 
-	def private findControllerAnnotation(controller) {
+	def private void mapSecurityAnnotations(controller) {
 		def clazz = controller.getClazz()
 		def controllerName = WordUtils.uncapitalize(controller.getName())
 		
+		def controllerRoles = findControllerRoles(clazz)
 		def actionRoles = findActionRoles(clazz)
-		if (actionRoles != null)
-			actionRoleMap.putAt controllerName, actionRoles
-			
-		actionRoleMap
+		
+		compileActionRoleMap controllerName, controllerRoles, actionRoles
+	}
+	
+	def private void compileActionRoleMap(controllerName, controllerRoles, actionRoles) {
+		actionRoleMap.putAt controllerName, [:]
+		
+		def rolesMap = [:]
+		controllerRoles.each {
+			def roles = actionRoles.getAt(it.key) ? actionRoles.getAt(it.key) : [] as Set
+			rolesMap.putAt it.key, it.value + roles
+		}
+		
+		actionRoleMap.putAt controllerName, rolesMap
+	}
+	
+	def private findControllerRoles(clazz) {
+		def controllerRoles = [:]
+		
+		def roles = clazz.getAnnotation(Secure.class)?.value() as Set
+		if (!roles) roles = [] as Set
+
+		for (field in clazz.getDeclaredFields()) {
+			if (field.getName() != "metaClass") // to avoid GroovyCastException
+				controllerRoles.putAt field.getName(), roles
+		}
+		
+		controllerRoles
 	}
 	
 	def private findActionRoles(clazz) {
 		def actionRoles = [:]
 		
-		Secure typeAnnotation = clazz.getAnnotation(Secure.class)
-		if (typeAnnotation) {
-			for (field in clazz.getDeclaredFields()) {
-				if (field.getName() != "metaClass") // to avoid GroovyCastException
-					actionRoles.putAt field.getName(), typeAnnotation.value() as Set
-			}
-		} else {
-			for (field in clazz.getDeclaredFields()) {
-				Secure annotation = field.getAnnotation(Secure.class)
-				if (annotation != null)
-					actionRoles.putAt field.getName(), annotation.value() as Set
-			}
+		for (field in clazz.getDeclaredFields()) {
+			def roles = field.getAnnotation(Secure.class)?.value() as Set
+			if (roles)
+				actionRoles.putAt field.getName(), roles
 		}
 
 		actionRoles
