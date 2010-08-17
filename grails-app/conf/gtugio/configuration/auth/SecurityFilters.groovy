@@ -59,7 +59,7 @@ class SecurityFilters {
 			def roles = actionRoles.getAt(it.key) ? actionRoles.getAt(it.key) : [] as Set
 			rolesMap.putAt it.key, it.value + roles
 		}
-		
+		println rolesMap
 		actionRoleMap.putAt controllerName, rolesMap
 	}
 	
@@ -70,7 +70,7 @@ class SecurityFilters {
 		if (!roles) roles = [] as Set
 
 		for (field in clazz.getDeclaredFields()) {
-			if (field.getName() != "metaClass") // to avoid GroovyCastException
+			if (!isRestricted(field.getName()))
 				controllerRoles.putAt field.getName(), roles
 		}
 		
@@ -87,5 +87,11 @@ class SecurityFilters {
 		}
 
 		actionRoles
+	}
+	
+	def boolean isRestricted(String fieldName) {
+		fieldName.startsWith("\$") || fieldName.startsWith("__") ||
+			fieldName.contains("scaffold") || fieldName.contains("navigation") ||
+			fieldName.equals("metaClass")  // to avoid GroovyCastException
 	}
 }
