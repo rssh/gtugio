@@ -1,0 +1,7 @@
+
+Currect activity:
+ - Add email notification after registration
+ - Applications publishing
+ - Amazone S3 Support
+ - Cookie sessions
+ - 

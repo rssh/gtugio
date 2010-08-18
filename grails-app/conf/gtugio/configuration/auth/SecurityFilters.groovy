@@ -92,6 +92,6 @@ class SecurityFilters {
 	def boolean isRestricted(String fieldName) {
 		fieldName.startsWith("\$") || fieldName.startsWith("__") ||
 			fieldName.contains("scaffold") || fieldName.contains("navigation") ||
-			fieldName.equals("metaClass")  // to avoid GroovyCastException
+			fieldName.equals("metaClass")  || fieldName.equals("sendMail") // to avoid GroovyCastException
 	}
 }

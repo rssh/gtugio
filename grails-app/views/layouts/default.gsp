@@ -13,7 +13,7 @@
 
 	<link rel="alternate" type="application/atom+xml" title=" (Atom)" href="/feed/atom" />
 	
-	<nav:resources/> 
+	<nav:resources override="true"/> 
 </head>
 
 <body>

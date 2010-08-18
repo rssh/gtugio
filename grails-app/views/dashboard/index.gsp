@@ -3,7 +3,7 @@
 	<meta name="layout" content="default"></meta>
 	<g:metatags/>
 	
-	<nav:resources/> 
+	<nav:resources override="true"/> 
 </head>
 
 <body>
