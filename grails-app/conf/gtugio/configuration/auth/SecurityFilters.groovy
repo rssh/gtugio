@@ -59,7 +59,7 @@ class SecurityFilters {
 			def roles = actionRoles.getAt(it.key) ? actionRoles.getAt(it.key) : [] as Set
 			rolesMap.putAt it.key, it.value + roles
 		}
-		println rolesMap
+
 		actionRoleMap.putAt controllerName, rolesMap
 	}
 	
