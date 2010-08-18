@@ -5,7 +5,7 @@ import gtugio.configuration.ApplicationKind
 class ChromeAppProject extends Project {
 
 	String kind = ApplicationKind.CHROME_APP
-	String icon = "/images/default_chromeapp_icon.png"
+	String icon = "default_chromeapp_icon.png"
 	
 	String appMarketPlaceURL
 	
