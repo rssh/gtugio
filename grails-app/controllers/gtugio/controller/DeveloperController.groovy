@@ -7,6 +7,15 @@ import gtugio.domain.Project
 @Secure([Role.USER, Role.MODERATOR, Role.ADMIN])
 class DeveloperController {
 
+	static navigation = [
+		[
+			group: "developer_aside",
+			order: 1,
+			title: "Publish your project",
+			action: "publish",
+		]
+	]
+	
     def index = {
 		redirect(action:"dashboard")
 	}
@@ -23,5 +32,9 @@ class DeveloperController {
 	
 	def profile = {
 		render "profile"
+	}
+	
+	def publish = {
+		render 'publishing'
 	}
 }

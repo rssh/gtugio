@@ -15,8 +15,8 @@ class ProjectController {
 		[
 			group: "admin",
 			order: 5,
-			title:'Other projects',
-			action: 'list',
+			title: "Other projects",
+			action: "list",
 			idVisible: { session.user?.role == Role.ADMIN }
 		]
 	]
