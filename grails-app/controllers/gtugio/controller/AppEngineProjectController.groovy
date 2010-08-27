@@ -15,7 +15,7 @@ class AppEngineProjectController {
 			order: 2,
 			title:'AppEngine projects',
 			action: 'list',
-			idVisible: { session.user?.role == Role.ADMIN }
+			isVisible: { session.user?.role == Role.ADMIN }
 		]
 	]
 }

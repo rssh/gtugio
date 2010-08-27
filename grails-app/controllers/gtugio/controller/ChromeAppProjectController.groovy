@@ -15,7 +15,7 @@ class ChromeAppProjectController {
 			order: 3,
 			title:'Chrome Applications projects',
 			action: 'list',
-			idVisible: { session.user?.role == Role.ADMIN }
+			isVisible: { session.user?.role == Role.ADMIN }
 		]
 	]
 }

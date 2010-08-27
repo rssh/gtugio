@@ -45,5 +45,6 @@ class Page {
 	
 	static mapping = {
 		content type:"text"
+		cache usage:"read-write"
 	}
 }

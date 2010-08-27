@@ -12,4 +12,8 @@ class AppEngineProject extends Project {
     static constraints = {
 		applicationUrl(nullable:true, blank:false)
     }
+	
+	static mapping = {
+		cache usage:"read-write"
+	}
 }

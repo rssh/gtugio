@@ -62,4 +62,8 @@ class Project {
 		published(nullable:true)
 		updated(nullable:true)
     }
+	
+	static mapping = {
+		cache usage:"read-write"
+	}
 }

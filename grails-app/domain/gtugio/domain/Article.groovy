@@ -64,8 +64,10 @@ class Article {
 		sort published:"desc"
 		content type:"text"
 		contentHtml type:"text"
+
+		cache usage:"read-write"
 	}
-	
+
 	static indexes = {
 		published()
 		status("chapter", "status")

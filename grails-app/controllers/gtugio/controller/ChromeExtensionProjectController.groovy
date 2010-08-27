@@ -15,7 +15,7 @@ class ChromeExtensionProjectController {
 			order: 4,
 			title:'Chrome Extensions projects',
 			action: 'list',
-			idVisible: { session.user?.role == Role.ADMIN }
+			isVisible: { session.user?.role == Role.ADMIN }
 		]
 	]
 }

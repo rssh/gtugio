@@ -9,4 +9,8 @@ class SiteProperty {
 		name(blank:false, unique:true)
 		value(blank:true, nullable:false)
 	}
+	
+	static mapping = {
+		cache usage:"read-write"
+	}
 }

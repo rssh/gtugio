@@ -14,4 +14,8 @@ class AndroidProject extends Project {
 		qrcode(nullable:true, blank:true)
 		marketUrl(nullable:true, blank:true)
     }
+	
+	static mapping = {
+		cache usage:"read-write"
+	}
 }

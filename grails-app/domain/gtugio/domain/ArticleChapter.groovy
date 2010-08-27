@@ -9,4 +9,8 @@ class ArticleChapter {
 		name(blank:false)
 		slug(blank:false, unique:true)
 	}
+	
+	static mapping = {
+		cache usage:"read-write"
+	}
 }

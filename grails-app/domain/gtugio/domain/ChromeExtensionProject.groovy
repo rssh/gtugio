@@ -12,4 +12,8 @@ class ChromeExtensionProject extends Project {
     static constraints = {
 		extensionURL(nullable:true, blank:false)
     }
+	
+	static mapping = {
+		cache usage:"read-write"
+	}
 }

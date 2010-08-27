@@ -4,4 +4,6 @@ Currect activity:
  - Applications publishing
  - Amazone S3 Support
  - Cookie sessions
- - 
+ - Sign Out
+ - Separate slurp configurations for Amazon S3 and Mail
+ - Add Jetty context configuration.

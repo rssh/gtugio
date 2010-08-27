@@ -12,4 +12,8 @@ class ChromeAppProject extends Project {
     static constraints = {
 		appMarketPlaceURL(nullable:true, blank:false)
     }
+	
+	static mapping = {
+		cache usage:"read-write"
+	}
 }
