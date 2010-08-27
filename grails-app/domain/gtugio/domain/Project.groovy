@@ -1,7 +1,6 @@
 package gtugio.domain
 
 import gtugio.configuration.ApplicationKind 
-import gtugio.configuration.PropertyName 
 
 class Project {
 

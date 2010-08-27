@@ -1,7 +1,13 @@
 package gtugio.controller
 
-import gtugio.configuration.auth.Role
-import gtugio.core.auth.Secure 
+import gtugio.configuration.ApplicationKind
+
+import gtugio.configuration.auth.Role 
+import gtugio.core.auth.Secure
+import gtugio.domain.AndroidProject 
+import gtugio.domain.AppEngineProject 
+import gtugio.domain.ChromeAppProject 
+import gtugio.domain.ChromeExtensionProject 
 import gtugio.domain.Project 
 
 @Secure([Role.USER, Role.MODERATOR, Role.ADMIN])
@@ -12,7 +18,7 @@ class DeveloperController {
 			group: "developer_aside",
 			order: 1,
 			title: "Publish your project",
-			action: "publish",
+			action: "dashboard"
 		]
 	]
 	
@@ -27,6 +33,10 @@ class DeveloperController {
 			}
 		}
 		
+		/*def appKinds = [ApplicationKind.ANDROID : "Android", ApplicaitonKind.CHROME_EXTENSION:"Chome extension",
+						ApplicaitonKind.CHROME_APP:"Chome application", ApplicationKind.APP_ENGINE:"App Engine",
+						ApplicaitonKind.LIBRARY:"Other libraries"]*/
+		
 		[ projects:projects ]
 	}
 	
@@ -35,6 +45,36 @@ class DeveloperController {
 	}
 	
 	def publish = {
-		render 'publishing'
+		def project
+		def template
+		
+		switch (params.id) {
+			case ApplicationKind.ANDROID:
+			project = new AndroidProject()
+			template = ApplicationKind.ANDROID
+			break
+			
+			case ApplicationKind.CHROME_EXTENSION:
+			project = new ChromeExtensionProject()
+			template = ApplicationKind.CHROME_EXTENSION
+			break
+			
+			case ApplicationKind.CHROME_APP:
+			project = new ChromeAppProject()
+			template = ApplicationKind.CHROME_APP
+			break
+			
+			case ApplicationKind.APP_ENGINE:
+			project = new AppEngineProject()
+			template = ApplicationKind.APP_ENGINE
+			break
+			
+			case ApplicationKind.LIBRARY:
+			default:
+			project = new Project()
+			break
+		}
+		
+		[ project : project, template : template ]
 	}
 }

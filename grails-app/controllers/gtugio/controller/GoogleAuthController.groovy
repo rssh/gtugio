@@ -23,7 +23,6 @@ class GoogleAuthController {
 	
 	def index = {
 		// show the login page
-		// store in session returnurl
 		params['returnurl'] = params['returnurl'] ? params['returnurl'] : "/"
 		session.setAttribute "returnurl", params['returnurl']
 		
@@ -57,6 +56,11 @@ class GoogleAuthController {
 		} else {
 			redirect(controller:"googleAuth")
 		}
+	}
+	
+	def signout = {
+		session.user = null
+		redirect(controller:"dashboard")
 	}
 	
 	def verify = {
