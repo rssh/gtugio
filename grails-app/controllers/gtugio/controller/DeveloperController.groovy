@@ -33,11 +33,7 @@ class DeveloperController {
 			}
 		}
 		
-		/*def appKinds = [ApplicationKind.ANDROID : "Android", ApplicaitonKind.CHROME_EXTENSION:"Chome extension",
-						ApplicaitonKind.CHROME_APP:"Chome application", ApplicationKind.APP_ENGINE:"App Engine",
-						ApplicaitonKind.LIBRARY:"Other libraries"]*/
-		
-		[ projects:projects ]
+		[ projects : projects, appKinds : ApplicationKind.asMap() ]
 	}
 	
 	def profile = {

@@ -43,7 +43,9 @@
 	
 	<h3>Choose application to publish</h3>
 	<ol>
-		<li></li>
+	<g:each in="${appKinds}" var="kind">
+		<li><a href="<g:resource dir="/developer/publish/${kind.key}"/>">${kind.value}</a></li>
+	</g:each>
 	</ol>
 </body>
 </html>
