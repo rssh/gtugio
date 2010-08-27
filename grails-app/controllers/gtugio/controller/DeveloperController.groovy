@@ -41,28 +41,34 @@ class DeveloperController {
 	}
 	
 	def publish = {
+		/*
+		withForm {
+			// good request
+		}
+		 */
+		
 		def project
-		def template
+		def kind
 		
 		switch (params.id) {
 			case ApplicationKind.ANDROID:
 			project = new AndroidProject()
-			template = ApplicationKind.ANDROID
+			kind = ApplicationKind.ANDROID
 			break
 			
 			case ApplicationKind.CHROME_EXTENSION:
 			project = new ChromeExtensionProject()
-			template = ApplicationKind.CHROME_EXTENSION
+			kind = ApplicationKind.CHROME_EXTENSION
 			break
 			
 			case ApplicationKind.CHROME_APP:
 			project = new ChromeAppProject()
-			template = ApplicationKind.CHROME_APP
+			kind = ApplicationKind.CHROME_APP
 			break
 			
 			case ApplicationKind.APP_ENGINE:
 			project = new AppEngineProject()
-			template = ApplicationKind.APP_ENGINE
+			kind = ApplicationKind.APP_ENGINE
 			break
 			
 			case ApplicationKind.LIBRARY:
@@ -71,6 +77,10 @@ class DeveloperController {
 			break
 		}
 		
-		[ project : project, template : template ]
+		[ project : project, kind : kind ]
+	}
+	
+	def preview = {
+		render "preview"
 	}
 }

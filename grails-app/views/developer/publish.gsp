@@ -14,58 +14,60 @@
 	<section class="form">
 		<span class="asterisk">* Required</span>
 
-		<form action="" name="" method="post">
-		
+		<g:form name="application_publish" url="[controller:'developer', action:'publish']" useToken="true">
+		<g:hiddenField name="kind" value="${kind}" />
 		<ol>
 			<li>
 				<label for="name">Project Name <span class="asterisk">*</span></label>
 				<label for="name">Email address where you would like to receive your invitation</label>
-				<input type="text" name="name" value="" id="name" autofocus required>
+				<g:textField name="name" value="" id="name" autofocus="on" required="on"/>
 			</li>
 			
 			<li>
 				<label for="description">Short description <span class="asterisk">*</span></label>
 				<label for="description">This is a short description</label>
-				<input type="text" name="description" value="" id="description" required>
+				<g:textField name="description" value="" id="description" required="on"/>
 			</li>
 			
 			<li>
 				<label for="detailedDescription">Detailed description <span class="asterisk">*</span></label>
 				<label for="detailedDescription">This is a deteailed description</label>
-				<textarea type="text" name="detailedDescription" value="" id="detailedDescription" required></textarea>
+				<g:textArea name="detailedDescription" value="" id="detailedDescription" required="on"/>
 			</li>
 			
 			<li>
 				<label for="version">Version <span class="asterisk">*</span></label>
 				<label for="version">Application version</label>
-				<input type="text" name="version" value="" id="version" required>
+				<g:textField name="version" value="" id="version" required="on"/>
 			</li>
 			
 			<li>
 				<label for="website">Support website</label>
 				<label for="website">Application version</label>
-				<input type="text" name="website" value="" id="website">
+				<g:textField name="website" value="" id="website"/>
 			</li>
 			
 			<li>
 				<label for="website">Website <span class="asterisk">*</span></label>
 				<label for="website">Application version</label>
-				<input type="text" name="website" value="" id="website" required>
+				<g:textField name="website" value="" id="website" required="on"/>
 			</li>
 			
 			<li>
 				<label for="support">Support website <span class="asterisk">*</span></label>
 				<label for="support">Application version</label>
-				<input type="text" name="support" value="" id="support" required>
+				<g:textField name="support" value="" id="support" required="on"/>
 			</li>
 		</ol>
 		
-		<g:if test="${template}">
-			<g:render template="app_kinds_form_templates/${template}"/>
+		<g:if test="${kind}">
+			<g:render template="app_kinds_form_templates/${kind}"/>
 		</g:if>
 		
-		<input type="submit" value="Submit">
-		</form>
+		<g:actionSubmit value="Publish" action="publish" />
+		<g:actionSubmit value="Preview" action="preview" />
+		<g:actionSubmit value="Save as draft" action="draft" />
+		</g:form>
 	</section>
 </body>
 </html>
