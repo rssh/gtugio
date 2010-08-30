@@ -12,7 +12,7 @@ import gtugio.domain.Project
 
 @Secure([Role.USER, Role.MODERATOR, Role.ADMIN])
 class DeveloperController {
-
+	
 	static navigation = [
 		[
 			group: "developer_aside",
@@ -22,10 +22,10 @@ class DeveloperController {
 		]
 	]
 	
-    def index = {
+	def index = {
 		redirect(action:"dashboard")
 	}
-
+	
 	def dashboard = {
 		def projects = Project.withCriteria {
 			user {
@@ -41,43 +41,57 @@ class DeveloperController {
 	}
 	
 	def publish = {
-		/*
-		withForm {
-			// good request
-		}
-		 */
-		
 		def project
-		def kind
 		
-		switch (params.id) {
-			case ApplicationKind.ANDROID:
-			project = new AndroidProject()
-			kind = ApplicationKind.ANDROID
-			break
-			
-			case ApplicationKind.CHROME_EXTENSION:
-			project = new ChromeExtensionProject()
-			kind = ApplicationKind.CHROME_EXTENSION
-			break
-			
-			case ApplicationKind.CHROME_APP:
-			project = new ChromeAppProject()
-			kind = ApplicationKind.CHROME_APP
-			break
-			
-			case ApplicationKind.APP_ENGINE:
-			project = new AppEngineProject()
-			kind = ApplicationKind.APP_ENGINE
-			break
-			
-			case ApplicationKind.LIBRARY:
-			default:
-			project = new Project()
-			break
+		if (params.kind) {
+			withForm {
+				project = Project.getInstanceByKind(params.kind)
+				
+				params.user = session.user
+				params.status = "pending"
+				
+				project.properties = params
+				
+				if (!project.hasErrors() && project.save(flush: true)) {
+					// TODO: Send e-mail notify for approve
+					
+					flash.message = "${message(code: 'default.created.message', args: [message(code: 'project.label', default: 'Project'), project.id])}"
+					redirect(controller: "developer", action: "dashboard")
+				}
+			}
+		} else {
+			project = Project.getInstanceByKind(params.id)
 		}
 		
-		[ project : project, kind : kind ]
+		[ project : project, kind : project.kind ]
+	}
+	
+	def save_draft = {
+		def project
+		
+		if (params.kind) {
+			withForm {
+				project = Project.getInstanceByKind(params.kind)
+				
+				params.user = session.user
+				params.status = "draft"
+				
+				project.properties = params
+				
+				if (!project.hasErrors() && project.save(flush: true)) {
+					flash.message = "${message(code: 'default.created.message', args: [message(code: 'project.label', default: 'Project'), project.id])}"
+					redirect(controller: "developer", action: "dashboard")
+				}
+			}
+		} else {
+			project = Project.getInstanceByKind(params.id)
+		}
+		
+		[ project : project, kind : project.kind ]
+	}
+	
+	def discard = {
+		redirect(controller: "developer", action: "dashboard")
 	}
 	
 	def preview = {

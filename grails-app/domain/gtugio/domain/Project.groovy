@@ -27,8 +27,37 @@ class Project {
 	String declineDate
 	String declineReason
 	
-	Date published
+	Date published = new Date()
 	Date updated = new Date()
+	
+	def static getInstanceByKind(kind) {
+		def project
+		
+		switch (kind) {
+			case ApplicationKind.ANDROID:
+			project = new AndroidProject()
+			break
+			
+			case ApplicationKind.CHROME_EXTENSION:
+			project = new ChromeExtensionProject()
+			break
+			
+			case ApplicationKind.CHROME_APP:
+			project = new ChromeAppProject()
+			break
+			
+			case ApplicationKind.APP_ENGINE:
+			project = new AppEngineProject()
+			break
+			
+			case ApplicationKind.LIBRARY:
+			default:
+			project = new Project()
+			break
+		}
+		
+		project
+	}
 	
 	def beforeInsert = {
 		updated = new Date()
@@ -45,11 +74,11 @@ class Project {
 		detailedDescription(maxSize:2000, blank:false)
 		icon(blank:false)
 		appversion(maxSize:16, blank:false)
-		website(blank:true)
-		support(blank:true)
+		website(blank:true, nullable:true)
+		support(blank:true, nullable:true)
 		kind(blank:false, inList:[ApplicationKind.ANDROID, ApplicationKind.APP_ENGINE, 
 		                          ApplicationKind.CHROME_APP, ApplicationKind.CHROME_EXTENSION, ApplicationKind.LIBRARY])
-		repository(blank:false)
+		repository(blank:true, nullable:true)
 		status(blank:false, inList:["published", "draft", "pending", "approved", "declined"])
 		
 		approvedBy(nullable:true)

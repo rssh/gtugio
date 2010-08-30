@@ -5,6 +5,10 @@
 </head>
 
 <body>
+	<g:if test="${flash.message}">
+		<div class="message">${flash.message}</div>
+	</g:if>
+
 	<g:if test="${projects.size}">	
 		<section id="project_list">
 			<table>
@@ -20,8 +24,8 @@
 				<g:each in="${projects}" var="project">
 					<tr>
 						<td>
-							<img src="<g:createLinkTo dir="${project.icon}"/>">
-							<h2><a href="<g:createLinkTo dir="/projects/detail/${project.id}"/>">${project.name}</a></h2>
+							<img src="<g:resource dir="/images/${project.icon}"/>">
+							<h2><a href="<g:resource dir="/projects/detail/${project.id}"/>">${project.name}</a></h2>
 							Version ${project.appversion}
 						</td>
 						<td>${project.kind}</td>
