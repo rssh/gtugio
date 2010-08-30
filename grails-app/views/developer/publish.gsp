@@ -14,8 +14,7 @@
 		</div>
 	</g:hasErrors>
 	
-	<section class="form_notification">Please enter the information below to join the waiting list for an invitation.
-	Visit http://code.google.com/apis/storage to learn more about the service.</section>
+	<section class="form_notification">Please enter the information below to to publish your project.</section>
 	
 	<section class="form">
 		<span class="asterisk">* Required</span>
