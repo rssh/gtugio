@@ -67,10 +67,12 @@ class SecurityFilters {
 		def controllerRoles = [:]
 		
 		def roles = clazz.getAnnotation(Secure.class)?.value() as Set
+		def exclude = clazz.getAnnotation(Secure.class)?.exclude() as Set
 		if (!roles) roles = [] as Set
+		if (!exclude) exclude = [] as Set
 
 		for (field in clazz.getDeclaredFields()) {
-			if (!isRestricted(field.getName()))
+			if (!isRestricted(field.getName()) && !exclude.contains(field.getName()))
 				controllerRoles.putAt field.getName(), roles
 		}
 		
