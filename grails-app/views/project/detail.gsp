@@ -28,5 +28,30 @@
 		</g:else>
 	</section>
 	
+	<section id="comments">
+		<g:if test="${comments}">
+			<g:each in="${comments}" var="comment">
+				<div>
+					<b>${comment.user.nickname}</b> <time datetime="${comment.posted}"><g:dateFormat format="d MMMM, yyyy" date="${comment.posted}" /></time><br/>
+					${comment.text}
+				</div>
+			</g:each>
+		</g:if>
+		<g:else>
+			No comments yet
+		</g:else>
+	</section>
+
+	<g:if test="${session.user}">
+		<g:form name="comment_publish" url="[controller:'project', action:'post_comment']" useToken="true">
+			<g:hiddenField name="project_id" value="${project.id}" />
+			<g:textArea name="text" value="${comment?.text}" id="text" required="on"/>
+			<g:actionSubmit value="Publish" action="post_comment" />
+		</g:form>
+	</g:if>
+	<g:else>
+		You have to <a href="/gtugio/authenticate/signin">sign in</a> first to be able to leave comments
+	</g:else>
+	
 </body>
 </html>

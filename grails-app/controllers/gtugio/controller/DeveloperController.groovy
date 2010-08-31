@@ -86,7 +86,7 @@ class DeveloperController {
 		} else {
 			project = Project.getInstanceByKind(params.id)
 		}
-		
+
 		[ project : project, kind : project.kind ]
 	}
 	
