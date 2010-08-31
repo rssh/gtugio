@@ -30,7 +30,7 @@
 		</g:if>
 		
 		<section id="logo">
-			<img src="<g:resource dir="images" file="gtugio_logo.jpg" />">
+			<a href="<g:resource dir="/"/>"><img src="<g:resource dir="images" file="gtugio_logo.jpg" />"></a>
 		</section>
 	</header>
 

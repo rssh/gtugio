@@ -23,7 +23,8 @@
 			<a href="${project.support}" rel="external">Support website</a>
 		</g:if>
 		<g:else>
-			<h2>Project not found</h2>
+			<h2>An error occurred:</h2>
+			Item not found. This item may have been removed by its author.
 		</g:else>
 	</section>
 	

@@ -116,9 +116,15 @@ class ProjectController {
     }
 	
 	def detail = {
-		def projectid = params.id as int
+		def project
+		def comments
 		
-		def project = Project.findByIdAndStatus(projectid, "published")
+		try {
+			def projectid = params.id as int
+			project = Project.findByIdAndStatus(projectid, "published")
+		} catch (NumberFormatException e) {
+		}
+		
 		[ project : project ]
 	}
 }
