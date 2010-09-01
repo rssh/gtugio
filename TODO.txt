@@ -1,8 +1,16 @@
 
 Currect activity:
+ - Unpublish link from dashboard
+ - Edit projects
+ - Icon upload
+ - Sessions in cookie
  - Integrate Akismet
+ - Screenshots
+ - Show user-friendly type on dashboard
  - Amazone S3 Support
  - Separate slurp configurations for Amazon S3 and Mail
- - Cookie sessions
  - Add email notification after registration
- - Add Jetty context configuration.
+ - Logo
+ - User profile (??)
+ - Moderator lists
+ - Re-design default admin layout
