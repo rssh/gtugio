@@ -20,10 +20,10 @@
 		<span class="asterisk">* Required</span>
 
 		<g:form name="application_publish" url="[controller:'developer', action:'publish']" useToken="true" enctype="multipart/form-data">
-		<g:hiddenField name="kind" value="${kind}" />
+		<g:hiddenField name="kind" value="${project.kind}" />
 		
-		<g:if test="${kind}">
-			<g:render template="app_kinds_form_templates/${kind}"/>
+		<g:if test="${project.kind}">
+			<g:render template="app_kinds_form_templates/${project.kind}"/>
 		</g:if>
 		
 		<ol>
@@ -48,7 +48,7 @@
 			<li>
 				<label for="appversion">Version <span class="asterisk">*</span></label>
 				<label for="appversion">Application version</label>
-				<g:textField name="appversion" value="${project?.version}" id="appversion" required="on"/>
+				<g:textField name="appversion" value="${project?.appversion}" id="appversion" required="on"/>
 			</li>
 			
 			<li>

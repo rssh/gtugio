@@ -1,6 +1,6 @@
 
 Currect activity:
- - Unpublish link from dashboard
+ - Add check for apps authors when do any action
  - Edit projects
  - Icon upload
  - Sessions in cookie
@@ -14,3 +14,7 @@ Currect activity:
  - User profile (??)
  - Moderator lists
  - Re-design default admin layout
+ - Get rid of scaffolding
+ - Update messages (i18n)
+ - return_to URL when redirect to authenticate page
+ - Add field detailed validators

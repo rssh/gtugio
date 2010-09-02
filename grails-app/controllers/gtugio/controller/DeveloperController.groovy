@@ -63,7 +63,7 @@ class DeveloperController {
 			project = Project.getInstanceByKind(params.id)
 		}
 		
-		[ project : project, kind : project.kind ]
+		[ project : project]
 	}
 	
 	def save_draft = {
@@ -87,7 +87,7 @@ class DeveloperController {
 			project = Project.getInstanceByKind(params.id)
 		}
 
-		[ project : project, kind : project.kind ]
+		[ project : project ]
 	}
 	
 	def discard = {
@@ -114,5 +114,33 @@ class DeveloperController {
 		}
 		
 		redirect(controller: "developer", action: "dashboard")
+	}
+	
+	def edit = {
+		def project
+
+		if (params.kind && params.project_edit_id) {
+			withForm {
+				params.project_edit_id = params.project_edit_id as int
+				project = Project.get(params.project_edit_id)
+				project.properties = params
+				
+				if (!project.hasErrors() && project.save(flush: true)) {
+					flash.message = "Project has been updated."
+					redirect(controller: "developer", action: "dashboard")
+				} else {
+					flash.message = "Error while updating project."
+				}
+			}
+		} else {
+			try {
+				params.id = params.id as int
+				project = Project.get(params.id)
+			} catch (NumberFormatException e) {
+			}
+			
+		}
+		
+		[ project: project ]
 	}
 }
