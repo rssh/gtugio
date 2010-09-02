@@ -97,4 +97,22 @@ class DeveloperController {
 	def preview = {
 		render "preview"
 	}
+	
+	def unpublish = {
+		withForm {
+			if (params.project_unpublish_id) {
+				params.project_unpublish_id = params.project_unpublish_id as int
+				def project = Project.get(params.project_unpublish_id)
+				project.status = "draft"
+				
+				if (!project.hasErrors() && project.save(flush:true)) {
+					flash.message = "Project has been unpublished."
+				} else {
+					flash.message = "Error while unpublishing project."
+				}
+			}
+		}
+		
+		redirect(controller: "developer", action: "dashboard")
+	}
 }

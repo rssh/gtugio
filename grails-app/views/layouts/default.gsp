@@ -7,6 +7,7 @@
   	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   	<![endif]--> 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+	<script src="${resource(dir: 'js', file: 'jqModal.js') }" type="text/javascript"></script>
 	
 	<link rel="stylesheet" href="${resource(dir:'css',file:'style.css')}" />
 	<link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.png')}" type="image/x-icon" />
