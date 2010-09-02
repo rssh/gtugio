@@ -1,7 +1,7 @@
 
 Currect activity:
  - Add check for apps authors when do any action
- - Edit projects
+ - Remove projects
  - Icon upload
  - Sessions in cookie
  - Integrate Akismet
