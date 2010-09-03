@@ -4,10 +4,6 @@ import gtugio.configuration.ApplicationKind
 
 import gtugio.configuration.auth.Role 
 import gtugio.core.auth.Secure
-import gtugio.domain.AndroidProject 
-import gtugio.domain.AppEngineProject 
-import gtugio.domain.ChromeAppProject 
-import gtugio.domain.ChromeExtensionProject 
 import gtugio.domain.Project 
 
 @Secure([Role.USER, Role.MODERATOR, Role.ADMIN])
@@ -119,6 +115,7 @@ class DeveloperController {
     }
 	
     def edit = {
+		// TODO: add version integrity check
 		try {
 			params.id = params.id as int
 	        def project = Project.get(params.id)
@@ -148,4 +145,27 @@ class DeveloperController {
 			return false
 		}
     }
+	
+	def remove = {
+		withForm {
+			if (params.project_delete_id) {
+				params.project_delete_id = params.project_delete_id as int
+				def project = Project.get(params.project_delete_id)
+				
+				if (session.user.id != project?.user?.id) {
+					render (view:"/errors/recordNotFound")
+					return false
+				}
+				
+				try {
+					project.delete(flush:true)
+					flash.message = "Project successfully removed."
+				} catch (org.springframework.dao.DataIntegrityViolationException e) {
+					flash.message = "Could not delete project ${project.name}."
+				}
+			}
+		}
+		
+		redirect(controller: "developer", action: "dashboard")
+	}
 }

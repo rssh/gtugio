@@ -1,6 +1,5 @@
 
 Currect activity:
- - Add check for apps authors when do any action
  - Remove projects
  - Icon upload
  - Sessions in cookie
@@ -18,3 +17,4 @@ Currect activity:
  - Update messages (i18n)
  - return_to URL when redirect to authenticate page
  - Add field detailed validators
+ - Refactor views and JS
