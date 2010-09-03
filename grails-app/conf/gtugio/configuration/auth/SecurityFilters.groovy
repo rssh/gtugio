@@ -5,95 +5,95 @@ import org.apache.commons.lang.WordUtils
 
 class SecurityFilters {
 
-	def static actionRoleMap = [:]
+    def static actionRoleMap = [:]
 	
-	def filters = {
-		auth(controller: "*", action: "*") {
-			before = {
-				def curActionName = actionName == null ? "index" : actionName
+    def filters = {
+        auth(controller: "*", action: "*") {
+            before = {
+                def curActionName = actionName == null ? "index" : actionName
 
-				if (!actionRoleMap.size()) {
-					grailsApplication.controllerClasses.each { controller ->
-						mapSecurityAnnotations(controller)
-					}
-				}
+                if (!actionRoleMap.size()) {
+                    grailsApplication.controllerClasses.each { controller ->
+                        mapSecurityAnnotations(controller)
+                    }
+                }
 
-				if (params.controller == null) {
-					redirect(controller:"googleAuth")
-					return true
-				} else if (!session.user && isSecuredResource(controllerName, curActionName)) {
-					redirect(controller:"googleAuth")
-					return false
-				} else if (session.user && isSecuredResource(controllerName, curActionName) 
-							&& !authorized(session.user.role, controllerName, curActionName)) {
-					redirect(controller:"errors", action:"accessDenied")
-					return false
-				}
-			}
-		}
-	}
+                if (params.controller == null) {
+                    redirect(controller:"googleAuth")
+                    return true
+                } else if (!session.user && isSecuredResource(controllerName, curActionName)) {
+                    redirect(controller:"googleAuth")
+                    return false
+                } else if (session.user && isSecuredResource(controllerName, curActionName)
+                    && !authorized(session.user.role, controllerName, curActionName)) {
+                    redirect(controller:"errors", action:"accessDenied")
+                    return false
+                }
+            }
+        }
+    }
 	
-	def private isSecuredResource(controller, action) {
-		actionRoleMap.getAt(controller)?.getAt(action)?.size() > 0
-	}
+    def private isSecuredResource(controller, action) {
+        actionRoleMap.getAt(controller)?.getAt(action)?.size() > 0
+    }
 	
-	def private authorized(userRole, controller, action) {
-		actionRoleMap.getAt(controller)?.getAt(action)?.contains(userRole)
-	}
+    def private authorized(userRole, controller, action) {
+        actionRoleMap.getAt(controller)?.getAt(action)?.contains(userRole)
+    }
 
-	def private void mapSecurityAnnotations(controller) {
-		def clazz = controller.getClazz()
-		def controllerName = WordUtils.uncapitalize(controller.getName())
+    def private void mapSecurityAnnotations(controller) {
+        def clazz = controller.getClazz()
+        def controllerName = WordUtils.uncapitalize(controller.getName())
 		
-		def controllerRoles = findControllerRoles(clazz)
-		def actionRoles = findActionRoles(clazz)
+        def controllerRoles = findControllerRoles(clazz)
+        def actionRoles = findActionRoles(clazz)
 		
-		compileActionRoleMap controllerName, controllerRoles, actionRoles
-	}
+        compileActionRoleMap controllerName, controllerRoles, actionRoles
+    }
 	
-	def private void compileActionRoleMap(controllerName, controllerRoles, actionRoles) {
-		actionRoleMap.putAt controllerName, [:]
+    def private void compileActionRoleMap(controllerName, controllerRoles, actionRoles) {
+        actionRoleMap.putAt controllerName, [:]
 		
-		def rolesMap = [:]
-		controllerRoles.each {
-			def roles = actionRoles.getAt(it.key) ? actionRoles.getAt(it.key) : [] as Set
-			rolesMap.putAt it.key, it.value + roles
-		}
+        def rolesMap = [:]
+        controllerRoles.each {
+            def roles = actionRoles.getAt(it.key) ? actionRoles.getAt(it.key) : [] as Set
+            rolesMap.putAt it.key, it.value + roles
+        }
 
-		actionRoleMap.putAt controllerName, rolesMap
-	}
+        actionRoleMap.putAt controllerName, rolesMap
+    }
 	
-	def private findControllerRoles(clazz) {
-		def controllerRoles = [:]
+    def private findControllerRoles(clazz) {
+        def controllerRoles = [:]
 		
-		def roles = clazz.getAnnotation(Secure.class)?.value() as Set
-		def exclude = clazz.getAnnotation(Secure.class)?.exclude() as Set
-		if (!roles) roles = [] as Set
-		if (!exclude) exclude = [] as Set
+        def roles = clazz.getAnnotation(Secure.class)?.value() as Set
+        def exclude = clazz.getAnnotation(Secure.class)?.exclude() as Set
+        if (!roles) roles = [] as Set
+        if (!exclude) exclude = [] as Set
 
-		for (field in clazz.getDeclaredFields()) {
-			if (!isRestricted(field.getName()) && !exclude.contains(field.getName()))
-				controllerRoles.putAt field.getName(), roles
-		}
+        for (field in clazz.getDeclaredFields()) {
+            if (!isRestricted(field.getName()) && !exclude.contains(field.getName()))
+                controllerRoles.putAt field.getName(), roles
+        }
 		
-		controllerRoles
-	}
+        controllerRoles
+    }
 	
-	def private findActionRoles(clazz) {
-		def actionRoles = [:]
+    def private findActionRoles(clazz) {
+        def actionRoles = [:]
 		
-		for (field in clazz.getDeclaredFields()) {
-			def roles = field.getAnnotation(Secure.class)?.value() as Set
-			if (roles)
-				actionRoles.putAt field.getName(), roles
-		}
+        for (field in clazz.getDeclaredFields()) {
+            def roles = field.getAnnotation(Secure.class)?.value() as Set
+            if (roles)
+                actionRoles.putAt field.getName(), roles
+        }
 
-		actionRoles
-	}
+        actionRoles
+    }
 	
-	def boolean isRestricted(String fieldName) {
-		fieldName.startsWith("\$") || fieldName.startsWith("__") ||
-			fieldName.contains("scaffold") || fieldName.contains("navigation") ||
-			fieldName.equals("metaClass")  || fieldName.equals("sendMail") // to avoid GroovyCastException
-	}
+    def boolean isRestricted(String fieldName) {
+        fieldName.startsWith("\$") || fieldName.startsWith("__") ||
+        fieldName.contains("scaffold") || fieldName.contains("navigation") ||
+        fieldName.equals("metaClass")  || fieldName.equals("sendMail") // to avoid GroovyCastException
+    }
 }

@@ -5,3 +5,6 @@ target/*
 stacktrace.log
 *-javadoc.jar
 *-sources.jar
+*.iml
+*.ipr
+*.iws
