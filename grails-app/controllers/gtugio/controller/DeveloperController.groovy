@@ -86,9 +86,23 @@ class DeveloperController {
         redirect(controller: "developer", action: "dashboard")
     }
 	
-    def preview = {
-        render "preview"
-    }
+    /*def preview = {
+        if (params.kind) {
+            withForm {
+                def project = params.id ? Project.get(params.id) : Project.getInstanceByKind(params.kind)
+                project.properties = params
+
+                if (!project.hasErrors() && project.save(flush:true)) {
+					render(view: "preview", model: [ project : project ])
+                } else {
+					render(view: params.from, model: [ project : project ])
+					return false
+				}
+            }
+        } else {
+            redirect(controller: "developer", action: "dashboard")
+        }
+    }*/
 	
     def unpublish = {
         withForm {

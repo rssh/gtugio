@@ -21,6 +21,7 @@
 		<g:form name="application_edit" url="[controller:'developer', action:'edit']" useToken="true" enctype="multipart/form-data">
 		<g:hiddenField name="kind" value="${project.kind}" />
 		<g:hiddenField name="id" value="${project.id}" />
+		<g:hiddenField name="from" value="edit" />
 		
 		<g:if test="${project.kind}">
 			<g:render template="app_kinds_form_templates/${project.kind}"/>
@@ -70,10 +71,9 @@
 			</li>
 		</ol>
 		
-		<input type="button" value="Discard changes">
+		<g:actionSubmit value="Discard changes" action="discard" />
 		<g:actionSubmit value="Save draft and return to dashboard" action="save_draft" />
 		
-		<g:actionSubmit value="Preview changes" action="preview" />
 		<g:actionSubmit value="Publish changes" action="edit" />
 		</g:form>
 	</section>

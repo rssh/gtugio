@@ -30,6 +30,8 @@ class Project {
 	Date published = new Date()
 	Date updated = new Date()
 	
+	Integer staged = 0
+	
 	def static getInstanceByKind(kind) {
 		def project
 		
@@ -89,6 +91,8 @@ class Project {
 		
 		published(nullable:true)
 		updated(nullable:true)
+		
+		staged(nullable:true, blank:true)
     }
 	
 	static mapping = {

@@ -1,6 +1,6 @@
 
 Currect activity:
- - Remove projects
+ - Add restriction on getting staged objects
  - Icon upload
  - Sessions in cookie
  - Integrate Akismet

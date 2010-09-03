@@ -21,6 +21,7 @@
 
 		<g:form name="application_publish" url="[controller:'developer', action:'publish']" useToken="true" enctype="multipart/form-data">
 		<g:hiddenField name="kind" value="${project.kind}" />
+		<g:hiddenField name="from" value="publish" />
 		
 		<g:if test="${project.kind}">
 			<g:render template="app_kinds_form_templates/${project.kind}"/>
@@ -70,10 +71,9 @@
 			</li>
 		</ol>
 		
-		<input type="button" value="Discard changes">
+		<g:actionSubmit value="Discard changes" action="discard" />
 		<g:actionSubmit value="Save draft and return to dashboard" action="save_draft" />
 		
-		<g:actionSubmit value="Preview" action="preview" />
 		<g:actionSubmit value="Publish" action="publish" />
 		</g:form>
 	</section>
