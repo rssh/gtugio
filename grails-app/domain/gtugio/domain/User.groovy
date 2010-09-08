@@ -8,6 +8,7 @@ class User {
 	String nickname
 	String email
 	Date registrationDate
+	boolean trust = false
 	
 	Role role = Role.USER
 	

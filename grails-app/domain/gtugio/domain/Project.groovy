@@ -5,7 +5,10 @@ import gtugio.configuration.ApplicationKind
 class Project {
 
 	User user
-	
+	List contributors
+
+	static hasMany = [contributors:User]
+		
 	String name
 	String description
 	String detailedDescription

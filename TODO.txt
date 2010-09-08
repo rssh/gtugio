@@ -1,6 +1,9 @@
 
-Currect activity:
+Current activity:
  - Add restriction on getting staged objects
+ - Remove staged after publish
+ - Mark project as "looking for developers"
+ - Join to project functionality
  - Icon upload
  - Sessions in cookie
  - Integrate Akismet
@@ -18,3 +21,4 @@ Currect activity:
  - return_to URL when redirect to authenticate page
  - Add field detailed validators
  - Refactor views and JS
+ - GTUG-member/developer/gold widget for site

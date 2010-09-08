@@ -43,16 +43,15 @@ class DeveloperController {
             withForm {
                 project = Project.getInstanceByKind(params.kind)
 				
-                params.user = session.user
-                params.status = "pending"
-				
                 project.properties = params
+				project.properties.user = session.user
+				project.properties.status = "pending"
 				
                 if (!project.hasErrors() && project.save(flush: true)) {
                     // TODO: Send e-mail notify for approve
 					
                     flash.message = "${message(code: 'default.created.message', args: [message(code: 'project.label', default: 'Project'), project.id])}"
-                    redirect(controller: "developer", action: "dashboard")
+                    return redirect(controller: "developer", action: "dashboard")
                 }
             }
         } else {
@@ -63,23 +62,47 @@ class DeveloperController {
     }
 	
     def save_draft = {
-        def project
-		
-        withForm {
-            project = Project.getInstanceByKind(params.kind)
-			
-            params.user = session.user
-            params.status = "draft"
-			
-            project.properties = params
-			
-            if (!project.hasErrors() && project.save(flush: true)) {
-                flash.message = "${message(code: 'default.created.message', args: [message(code: 'project.label', default: 'Project'), project.id])}"
-                redirect(controller: "developer", action: "dashboard")
-            }
-        }
+		if (request.getMethod() == "POST") {
+			if (params.id) { // process existing project
+				withForm {
+					params.id = params.id as int
+					def projectOrig = Project.get(params.id)
+					
+					if (session.user.id != projectOrig?.user?.id) {
+						return render (view:"/errors/recordNotAccessible")
+					} 
+				
+					/* try to find staged project */
+					def projectStaged = Project.findByStaged(params.id)
+					if (!projectStaged)
+						projectStaged = Project.getInstanceByKind(params.kind)
+						
+					projectStaged.prperties = params
+					projectStaged.prperties.user = session.user
+					projectStaged.prperties.status = "draft"
 
-        [ project : project ]
+					if (!projectStaged.hasErrors() && projectStaged.save(flush:true)) {
+						return redirect(controller: "developer", action: "dashboard")
+					} else {
+						return render(view: "edit", model: [ project : projectOrig ])
+					}
+				}
+			} else {
+				withForm {
+					def project = Project.getInstanceByKind(params.kind)
+					
+					project.properties = params
+					project.properties.status = "draft"
+					project.properties.user = session.user
+					
+					if (!project.hasErrors() && project.save(flush: true)) {
+						return redirect(controller: "developer", action: "dashboard")
+					} else {
+						return render(view: "publish", model: [ project : project ])
+					}
+				}
+			}
+		}
     }
 	
     def discard = {
@@ -106,13 +129,12 @@ class DeveloperController {
 	
     def unpublish = {
         withForm {
-            if (params.project_unpublish_id) {
+            if (request.getMethod() == "POST" && params.project_unpublish_id) {
                 params.project_unpublish_id = params.project_unpublish_id as int
                 def project = Project.get(params.project_unpublish_id)
 				
 				if (session.user.id != project?.user?.id) {
-					render (view:"/errors/recordNotFound")
-					return false
+					return render (view:"/errors/recordNotAccessible")
 				}
 				
                 project.status = "draft"
@@ -135,11 +157,10 @@ class DeveloperController {
 	        def project = Project.get(params.id)
 
 			if (session.user.id != project?.user?.id) {
-				render (view:"/errors/recordNotAccessible")
-				return false
+				return render (view:"/errors/recordNotAccessible")
 			}
 			
-			if (params.kind) {
+			if (request.getMethod() == "POST" && params.kind) {
 				withForm {
 					project.properties = params
 					
@@ -155,20 +176,18 @@ class DeveloperController {
 			[ project: project ]
 
 		} catch (NumberFormatException e) {
-			render (view:"/errors/recordNotAccessible")
-			return false
+			return render (view:"/errors/recordNotAccessible")
 		}
     }
 	
 	def remove = {
 		withForm {
-			if (params.project_delete_id) {
+			if (request.getMethod() == "POST" && params.project_delete_id) {
 				params.project_delete_id = params.project_delete_id as int
 				def project = Project.get(params.project_delete_id)
 				
 				if (session.user.id != project?.user?.id) {
-					render (view:"/errors/recordNotFound")
-					return false
+					return render (view:"/errors/recordNotAccessible")
 				}
 				
 				try {
