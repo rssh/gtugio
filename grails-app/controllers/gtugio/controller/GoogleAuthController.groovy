@@ -5,7 +5,6 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.openid4java.consumer.ConsumerManager 
 import org.openid4java.consumer.VerificationResult 
 import org.openid4java.discovery.DiscoveryInformation 
-import org.openid4java.discovery.Identifier 
 import org.openid4java.message.AuthRequest 
 import org.openid4java.message.AuthSuccess 
 import org.openid4java.message.ParameterList 
@@ -79,14 +78,17 @@ class GoogleAuthController {
 			if (authSuccess.hasExtension(AxMessage.OPENID_NS_AX)) {
 				FetchResponse fetchResp = (FetchResponse) authSuccess.getExtension(AxMessage.OPENID_NS_AX)
 				
-				def email = fetchResp.getAttributeValues("email")[0]
-				def user = userService.findUser(email)
+				def email = fetchResp.getAttributeValues("email")[0] 
+				def user = User.findByEmail(email)
+
 				if (!user) {
 					def firstname = fetchResp.getAttributeValue("firstname")
 					def lastname = fetchResp.getAttributeValue("lastname")
 					
 					user = new User(name:"${firstname} ${lastname}", email:email, nickname:"${firstname} ${lastname}",
 						registrationDate: new Date()).save(flush:true)
+						
+					// TODO: Send reg notify to user and moderators
 				}
 
 				session.user = user

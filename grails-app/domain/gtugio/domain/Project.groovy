@@ -7,7 +7,7 @@ class Project {
 	User user
 	List contributors
 
-	static hasMany = [contributors:User]
+	static hasMany = [contributors:Integer]
 		
 	String name
 	String description
@@ -33,7 +33,7 @@ class Project {
 	Date published = new Date()
 	Date updated = new Date()
 	
-	Integer staged = 0
+	Integer staged
 	
 	def static getInstanceByKind(kind) {
 		def project

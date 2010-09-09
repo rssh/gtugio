@@ -24,6 +24,7 @@ class DeveloperController {
 	
     def dashboard = {
         def projects = Project.withCriteria {
+			isNull("staged")
             user {
                 eq("email", session.user.email)
             }
@@ -32,17 +33,13 @@ class DeveloperController {
         [ projects : projects, appKinds : ApplicationKind.asMap() ]
     }
 	
-    def profile = {
-        render "profile"
-    }
-	
     def publish = {
         def project
 		
-        if (params.kind) {
+        if (request.getMethod() == "POST" && params.kind) {
             withForm {
                 project = Project.getInstanceByKind(params.kind)
-				
+
                 project.properties = params
 				project.properties.user = session.user
 				project.properties.status = "pending"
@@ -77,9 +74,9 @@ class DeveloperController {
 					if (!projectStaged)
 						projectStaged = Project.getInstanceByKind(params.kind)
 						
-					projectStaged.prperties = params
-					projectStaged.prperties.user = session.user
-					projectStaged.prperties.status = "draft"
+					projectStaged.properties = params
+					projectStaged.properties.user = session.user
+					projectStaged.properties.status = "draft"
 
 					if (!projectStaged.hasErrors() && projectStaged.save(flush:true)) {
 						return redirect(controller: "developer", action: "dashboard")
@@ -105,100 +102,131 @@ class DeveloperController {
 		}
     }
 	
-    def discard = {
-        redirect(controller: "developer", action: "dashboard")
-    }
-	
-    /*def preview = {
-        if (params.kind) {
-            withForm {
-                def project = params.id ? Project.get(params.id) : Project.getInstanceByKind(params.kind)
-                project.properties = params
-
-                if (!project.hasErrors() && project.save(flush:true)) {
-					render(view: "preview", model: [ project : project ])
-                } else {
-					render(view: params.from, model: [ project : project ])
-					return false
-				}
-            }
-        } else {
-            redirect(controller: "developer", action: "dashboard")
-        }
-    }*/
-	
-    def unpublish = {
-        withForm {
-            if (request.getMethod() == "POST" && params.project_unpublish_id) {
-                params.project_unpublish_id = params.project_unpublish_id as int
-                def project = Project.get(params.project_unpublish_id)
-				
-				if (session.user.id != project?.user?.id) {
-					return render (view:"/errors/recordNotAccessible")
-				}
-				
-                project.status = "draft"
-				
-                if (!project.hasErrors() && project.save(flush:true)) {
-                    flash.message = "Project has been unpublished."
-                } else {
-                    flash.message = "Error while unpublishing project."
-                }
-            }
-        }
-		
-        redirect(controller: "developer", action: "dashboard")
-    }
-	
-    def edit = {
-		// TODO: add version integrity check
+	def edit = {
 		try {
 			params.id = params.id as int
-	        def project = Project.get(params.id)
-
-			if (session.user.id != project?.user?.id) {
+			
+			def projectOrig = Project.get(params.id)
+			if (session.user.id != projectOrig?.user?.id) {
 				return render (view:"/errors/recordNotAccessible")
 			}
 			
-			if (request.getMethod() == "POST" && params.kind) {
+			/* create staged project for edit */
+			def projectStaged = Project.findByStaged(params.id)
+			if (!projectStaged) {
+				projectStaged = Project.getInstanceByKind(projectOrig.kind)
+				projectStaged.properties = projectOrig.properties
+				
+				projectStaged.properties.contributors = null
+				projectStaged.properties.staged = projectOrig.id
+				projectStaged.save(flush:true)
+			}
+			
+			if (request.getMethod() == "POST") {
 				withForm {
-					project.properties = params
-					
-					if (!project.hasErrors() && project.save(flush:true)) {
+					projectStaged.properties = params
+
+					if (!projectOrig.hasErrors()) {
+						projectOrig.properties = params
+						
+						// if project has been approved earlier
+						if (projectOrig.approveDate) projectOrig.properties.status = "published"
+						
+						projectOrig.save(flush:true)
+						projectStaged.delete(flush:true)
+
 						flash.message = "Project has been updated."
-						redirect(controller: "developer", action: "dashboard")
+						return redirect(controller: "developer", action: "dashboard")
 					} else {
 						flash.message = "Error while updating project."
 					}
 				}
 			}
 			
-			[ project: project ]
+			[ projectStaged: projectStaged, projectOrig : projectOrig ]
 
 		} catch (NumberFormatException e) {
 			return render (view:"/errors/recordNotAccessible")
 		}
+	}
+	
+    def discard = {
+        redirect(controller: "developer", action: "dashboard")
     }
 	
-	def remove = {
-		withForm {
-			if (request.getMethod() == "POST" && params.project_delete_id) {
-				params.project_delete_id = params.project_delete_id as int
-				def project = Project.get(params.project_delete_id)
-				
-				if (session.user.id != project?.user?.id) {
-					return render (view:"/errors/recordNotAccessible")
-				}
-				
-				try {
-					project.delete(flush:true)
-					flash.message = "Project successfully removed."
-				} catch (org.springframework.dao.DataIntegrityViolationException e) {
-					flash.message = "Could not delete project ${project.name}."
+    def unpublish = {
+		if (request.getMethod() == "POST" && params.project_unpublish_id) {
+            params.project_unpublish_id = params.project_unpublish_id as int
+            def project = Project.get(params.project_unpublish_id)
+
+			if (session.user.id != project?.user?.id) {
+				return render (view:"/errors/recordNotAccessible")
+			}
+
+			def projectStaged = Project.findByStaged(project.id)
+			if (projectStaged) {
+				project.properties = projectStaged.properties
+				project.properties.staged = null
+
+				projectStaged.delete(flush:true)
+			}
+
+            project.properties.status = "draft"
+
+            if (!project.hasErrors() && project.save(flush:true)) {
+                flash.message = "Project has been unpublished."
+            } else {
+                flash.message = "Error while unpublishing project."
+            }
+        }
+		
+        redirect(controller: "developer", action: "dashboard")
+    }
+	
+    def remove = {
+    	withForm {
+    		if (request.getMethod() == "POST" && params.project_delete_id) {
+    			params.project_delete_id = params.project_delete_id as int
+    			def project = Project.get(params.project_delete_id)
+    			
+    			if (session.user.id != project?.user?.id) {
+    				return render (view:"/errors/recordNotAccessible")
+    			}
+    			
+    			try {
+    				def projectStaged = Project.findByStaged(project.id)
+    				if (projectStaged) projectStaged.delete(flush:true)
+    				
+    				project.delete(flush:true)
+    				flash.message = "Project successfully removed."
+    			} catch (org.springframework.dao.DataIntegrityViolationException e) {
+    				flash.message = "Could not delete project ${project.name}."
+    			}
+    		}
+    	}
+    	
+    	redirect(controller: "developer", action: "dashboard")
+    }
+	
+	/*def profile = {
+		render "profile"
+	}
+	
+	def preview = {
+		if (params.kind) {
+			withForm {
+				def project = params.id ? Project.get(params.id) : Project.getInstanceByKind(params.kind)
+				project.properties = params
+	
+				if (!project.hasErrors() && project.save(flush:true)) {
+					render(view: "preview", model: [ project : project ])
+				} else {
+					render(view: params.from, model: [ project : project ])
+					return false
 				}
 			}
+		} else {
+			redirect(controller: "developer", action: "dashboard")
 		}
-		
-		redirect(controller: "developer", action: "dashboard")
-	}
+	}*/
 }

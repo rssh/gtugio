@@ -9,6 +9,7 @@ class User {
 	String email
 	Date registrationDate
 	boolean trust = false
+	boolean verified = false
 	
 	Role role = Role.USER
 	
