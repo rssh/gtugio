@@ -100,7 +100,7 @@ class DeveloperController {
 		
         def projectOrig = Project.get(params.id)
         if (session.user.id != projectOrig?.user?.id)
-        return render (view:"/errors/recordNotAccessible")
+            return render (view:"/errors/recordNotAccessible")
 		
         /* create staged project for edit */
         def projectStaged = Project.findByStaged(params.id)

@@ -8,3 +8,4 @@ stacktrace.log
 *.iml
 *.ipr
 *.iws
+lib/*.jar

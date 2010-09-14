@@ -1,7 +1,5 @@
 
 Current activity:
- - Add restriction on getting staged objects
- - Remove staged after publish
  - Mark project as "looking for developers"
  - Join to project functionality
  - Icon upload
