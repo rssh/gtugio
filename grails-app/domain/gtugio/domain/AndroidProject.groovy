@@ -6,7 +6,7 @@ class AndroidProject extends Project {
 
 	String kind = ApplicationKind.ANDROID
 	
-	String icon = "default_android_icon.png"
+	String icon = "/images/default_android_icon.png"
 	String qrcode
 	String marketUrl
 	

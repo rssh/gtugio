@@ -51,11 +51,17 @@
 				<label for="appversion">Application version</label>
 				<g:textField name="appversion" value="${project?.appversion}" id="appversion" required="on"/>
 			</li>
-			
+
+			<li>
+				<label for="website">Website <span class="asterisk">*</span></label>
+				<label for="website">Application website</label>
+				<g:textField name="website" value="${project?.website}" id="website" required="on"/>
+			</li>
+
 			<li>
 				<label for="repository">Repository</label>
 				<label for="repository">URL to program sources</label>
-				<g:textField name="repository" value="${project?.repository}" id="repository" required="on"/>
+				<g:textField name="repository" value="${project?.repository}" id="repository"/>
 			</li>
 			
 			<li>
@@ -65,9 +71,9 @@
 			</li>
 			
 			<li>
-				<label for="website">Website <span class="asterisk">*</span></label>
-				<label for="website">Application website</label>
-				<g:textField name="website" value="${project?.website}" id="website" required="on"/>
+				<label for="website">Project icon</label>
+				<label for="website">Upload na icon 32x32 size of your project</label>
+				<g:textField name="website" value="${project?.website}" id="icon"/>
 			</li>
 		</ol>
 		

@@ -4,13 +4,17 @@ import gtugio.configuration.ApplicationKind
 
 import gtugio.configuration.auth.Role
 import gtugio.core.auth.Secure
-import gtugio.domain.Project 
+import gtugio.domain.Project
+import gtugio.utils.images.ImageProcessor
+import gtugio.utils.images.IconProcessor
 
 @Secure([Role.USER, Role.MODERATOR, Role.ADMIN])
 class DeveloperController {
-	
+
+	def imageProcessingService
+
     def projectService
-	
+
     static navigation = [
         [
             group: "developer_aside",
@@ -45,13 +49,23 @@ class DeveloperController {
         [ project : Project.getInstanceByKind(params.id)]
     }
 	
-    def protected process_new = { params, user ->
+    def protected process_new =	{ params, user ->
         def project = Project.getInstanceByKind(params.kind)
-		
-        project.properties = params
-        project.properties.user = user
+
+		project.properties = params
+		project.properties.user = user
         project.properties.status = "pending"
-		
+
+		def f = request.getFile("icon")
+		if (!f.epmpty()) {
+			def processor = new IconProcessor(f.getBytes())
+			if (!processor.validate()) {
+				return renderImageErrorResponse(processor.errcode(), "publish", project)
+			}
+
+			project.properties.icon = processor.process()
+		}
+
         if (!project.hasErrors() && project.save(flush: true)) {
             // TODO: Send e-mail notify for approve
 			
@@ -59,7 +73,13 @@ class DeveloperController {
             return redirect(controller: "developer", action: "dashboard")
         }
     }
-	
+
+	def protected renderImageErrorResponse(status, view, model) {
+
+
+		return render(view: view, model: [ project : project ])
+	}
+
     def save_draft = {
         if (request.getMethod() != "POST") {
             return render(view:"/errors/recordNotAccessible")
@@ -94,7 +114,7 @@ class DeveloperController {
     def edit = {
         try {
             params.id = params.id as int
-        } catch (NumberFormatException) {
+        } catch (NumberFormatException e) {
             return render (view:"/errors/recordNotAccessible")
         }
 		
@@ -176,7 +196,7 @@ class DeveloperController {
                 if (session.user.id != project?.user?.id) {
                     return render (view:"/errors/recordNotAccessible")
                 }
-    			
+
                 try {
                     def projectStaged = Project.findByStaged(project.id)
                     if (projectStaged) projectStaged.delete(flush:true)

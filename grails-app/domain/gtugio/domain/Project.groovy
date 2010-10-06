@@ -12,7 +12,7 @@ class Project {
 	String name
 	String description
 	String detailedDescription
-	String icon = "default_app_icon.png"
+	String icon = "/images/default_app_icon.png"
 	String appversion
 	String website
 	String support

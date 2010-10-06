@@ -53,7 +53,7 @@
 				<g:each in="${projects}" var="project">
 					<tr>
 						<td>
-							<img src="<g:resource dir="/images/${project.icon}"/>">
+							<img src="<g:resource dir="${project.icon}"/>">
 							<h2><a href="<g:resource dir="/project/detail/${project.id}"/>">${project.name}</a></h2>
 							Version ${project.appversion}
 						</td>
