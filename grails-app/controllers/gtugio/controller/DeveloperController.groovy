@@ -57,7 +57,7 @@ class DeveloperController {
         project.properties.status = "pending"
 
 		def f = request.getFile("icon")
-		if (!f.epmpty()) {
+		if (f!=null && !f.empty()) {
 			def processor = new IconProcessor(f.getBytes())
 			if (!processor.validate()) {
 				return renderImageErrorResponse(processor.errcode(), "publish", project)
